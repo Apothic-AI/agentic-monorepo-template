@@ -7,7 +7,9 @@
 This is a modern agentic monorepo built with:
 
 - **pnpm** - Fast, disk space efficient package manager
+{% if cookiecutter.use_moon == 'y' -%}
 - **moon** - Build system and task runner for monorepos
+{% endif -%}
 {% if cookiecutter.use_git_subrepo == 'y' -%}
 - **git-subrepo** - Multi-repository management
 {% endif -%}
@@ -18,7 +20,9 @@ This is a modern agentic monorepo built with:
 ```
 {{cookiecutter.project_slug}}/
 ├── .claude/           # Claude Code agent configuration
+{% if cookiecutter.use_moon == 'y' -%}
 ├── .moon/             # Moon build system config
+{% endif -%}
 ├── projects/
 │   ├── apps/          # Applications
 │   ├── experiments/   # Experimental code
@@ -64,7 +68,11 @@ pnpm test
 
 ## Development
 
+{% if cookiecutter.use_moon == 'y' -%}
 This monorepo uses [moon](https://moonrepo.dev/) for build orchestration and task management. Each project can have its own tasks defined in `moon.yml` files.
+{%- else -%}
+This monorepo uses pnpm workspaces for dependency management. You can add your own build scripts in package.json.
+{%- endif %}
 
 ### Environment Variables
 

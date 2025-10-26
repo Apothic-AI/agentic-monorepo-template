@@ -42,8 +42,10 @@ Always add a PLANNING_AND_PROGRESS.md to the new subrepo. This will be used by a
 **Once the new subrepo is in-place**
 
 - Analyze the new subrepo
+{% if cookiecutter.use_moon == 'y' -%}
 - Add an appropriate moon.yml config to the new subrepo.
-- If the new subrepo already contains a package config (Like package.json) ensure it is properly configured to work with our pnpm workspace, moon, etc.
+{%- endif %}
+- If the new subrepo already contains a package config (Like package.json) ensure it is properly configured to work with our pnpm workspace{% if cookiecutter.use_moon == 'y' %}, moon, etc{% endif %}.
 - Add a new subsection for the new subrepo in the planning and progress section of CLAUDE.md
 - Check to see if this monorepo's README.md contains a map of subrepos. If it does, add the new subrepo to it.
 

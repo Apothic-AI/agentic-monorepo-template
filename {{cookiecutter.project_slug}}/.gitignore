@@ -1,7 +1,9 @@
+{% if cookiecutter.use_moon == 'y' -%}
 # Moon cache
 .moon/cache/
 .moon/docker/
 
+{% endif -%}
 # Dependencies
 node_modules/
 .pnp

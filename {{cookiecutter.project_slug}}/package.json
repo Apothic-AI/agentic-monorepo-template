@@ -10,10 +10,17 @@
     "typescript": "^5.7.2"
   },
   "scripts": {
+{% if cookiecutter.use_moon == 'y' -%}
     "dev": "moon run :dev",
     "build": "moon run :build",
     "test": "moon run :test",
     "lint": "moon run :lint"
+{%- else -%}
+    "dev": "echo 'Add your dev script here'",
+    "build": "echo 'Add your build script here'",
+    "test": "echo 'Add your test script here'",
+    "lint": "echo 'Add your lint script here'"
+{%- endif %}
   },
   "engines": {
     "node": "~{{cookiecutter.node_version}}"

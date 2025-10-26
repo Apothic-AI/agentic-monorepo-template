@@ -12,6 +12,7 @@ def main():
     """Main post-generation logic."""
 
     use_git_subrepo = "{{ cookiecutter.use_git_subrepo }}".lower()
+    use_moon = "{{ cookiecutter.use_moon }}".lower()
 
     # Move git-subrepo files to archived if not using git-subrepo
     if use_git_subrepo != "y":
@@ -33,6 +34,29 @@ def main():
                 archive_path = os.path.join("archived", file_path)
                 shutil.move(file_path, archive_path)
                 print(f"  ✓ Moved {file_path} to archived/")
+
+    # Move moon files to archived if not using moon
+    if use_moon != "y":
+        print("📦 Moon not selected, archiving moon specific files...")
+
+        # Define directories and files to move
+        moon_items = [
+            ".moon",
+        ]
+
+        # Ensure archived directory exists
+        os.makedirs("archived", exist_ok=True)
+
+        # Move each item to archived location
+        for item_path in moon_items:
+            if os.path.exists(item_path):
+                archive_path = os.path.join("archived", item_path)
+                if os.path.isdir(item_path):
+                    shutil.move(item_path, archive_path)
+                    print(f"  ✓ Moved {item_path}/ to archived/")
+                else:
+                    shutil.move(item_path, archive_path)
+                    print(f"  ✓ Moved {item_path} to archived/")
 
     print("✅ Post-generation cleanup completed!")
     print("🚀 Your agentic monorepo is ready!")

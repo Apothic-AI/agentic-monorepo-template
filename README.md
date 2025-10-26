@@ -1,12 +1,13 @@
 # Agentic Monorepo Cookiecutter Template
 
-A modern cookiecutter template for creating agentic monorepos with pnpm, moon, and optional git-subrepo support.
+A modern cookiecutter template for creating agentic monorepos with pnpm and optional moon, proto, and git-subrepo support.
 
 ## Features
 
 🚀 **Modern Tooling**
 - [pnpm](https://pnpm.io/) - Fast, disk space efficient package manager
-- [moon](https://moonrepo.dev/) - Build system and task runner for monorepos
+- [moon](https://moonrepo.dev/) - Build system and task runner for monorepos (optional)
+- [proto](https://moonrepo.dev/proto) - Multi-language version manager (optional)
 - [git-subrepo](https://github.com/ingydotnet/git-subrepo) - Multi-repository management (optional)
 
 🏗️ **Multi-Language Support**
@@ -34,27 +35,35 @@ pip install cookiecutter
 ```
 
 **Generated Project Requirements:**
-- [Node.js](https://nodejs.org/) 18+ (recommended: use [proto](https://moonrepo.dev/proto) for version management)
+- [Node.js](https://nodejs.org/) 18+ (can be managed with [proto](https://moonrepo.dev/proto) if enabled)
 - [pnpm](https://pnpm.io/) - Fast package manager
-- [moon](https://moonrepo.dev/) - Build system and task runner
 - [Claude Code](https://claude.ai/code) - AI coding assistant
 - [uv](https://docs.astral.sh/uv/) - Fast Python package manager (if using Python libraries)
 
-**Optional Tools:**
-- [proto](https://moonrepo.dev/proto) - Multi-language version manager (recommended)
- 
+**Optional Tools (based on template choices):**
+- [proto](https://moonrepo.dev/proto) - Multi-language version manager (if `use_proto: y`)
+- [moon](https://moonrepo.dev/) - Build system and task runner (if `use_moon: y`)
+- [git-subrepo](https://github.com/ingydotnet/git-subrepo) - Multi-repository management (if `use_git_subrepo: y`)
 
 **Installation Commands:**
 ```bash
-# Install proto (recommended for version management)
+{% if cookiecutter.use_proto == 'y' -%}
+# Install proto (for version management)
 curl -fsSL https://moonrepo.dev/install/proto.sh | bash
 
 # Install Node.js and pnpm via proto
-proto install node 22
-proto install pnpm 10
+proto install node {{cookiecutter.node_version}}
+proto install pnpm {{cookiecutter.pnpm_version}}
+{%- else -%}
+# Install Node.js (visit https://nodejs.org/)
+# Then install pnpm
+npm install -g pnpm@{{cookiecutter.pnpm_version}}
+{%- endif %}
 
+{% if cookiecutter.use_moon == 'y' -%}
 # Install moon
 npm install -g @moonrepo/cli
+{% endif -%}
 
 # Install uv (for Python projects)
 curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -81,9 +90,11 @@ You'll be prompted for:
 - **github_username**: Your GitHub username
 - **github_organization**: GitHub org (defaults to your username)
 - **use_git_subrepo**: Enable git-subrepo support (y/n)
+- **use_moon**: Enable moon build system (y/n)
+- **use_proto**: Enable proto version manager (y/n)
 - **node_version**: Node.js version to use
 - **pnpm_version**: pnpm version to use
-- **moon_version**: moon version constraint
+- **moon_version**: moon version constraint (if moon enabled)
 - **license**: License type
 
 ### After Generation
@@ -115,7 +126,7 @@ your-project-slug/
 ├── .claude/                 # Claude Code configuration
 │   ├── agents/              # Specialized AI agents
 │   └── commands/            # Custom Claude Code commands
-├── .moon/                   # Moon build system config
+├── .moon/                   # Moon build system config (if moon enabled)
 │   ├── tasks/               # Language-specific task definitions
 │   ├── tasks.yml            # Global task definitions
 │   ├── toolchain.yml        # Toolchain configuration (Node, Python)
@@ -138,6 +149,7 @@ your-project-slug/
 │   └── third_party/         # Third-party dependencies
 ├── archived/                # Archived/unused features
 │   └── .claude/             # Conditional features (e.g., git-subrepo when disabled)
+│   └── .moon/               # Moon config if not enabled
 ├── bin/                     # Utility scripts
 ├── docs/                    # Documentation
 ├── logs/                    # Log files
@@ -150,10 +162,11 @@ your-project-slug/
 
 The generated monorepo includes:
 
-1. **Build System**: Moon orchestrates builds across all projects
-2. **Package Management**: pnpm workspaces for efficient dependency management
+1. **Package Management**: pnpm workspaces for efficient dependency management
+2. **Build System**: Optional moon for orchestrating builds across all projects
 3. **Version Control**: Git with optional git-subrepo for multi-repo management
-4. **AI Integration**: Pre-configured Claude Code setup with agent patterns
+4. **Version Management**: Optional proto for managing Node.js, Python, and other language versions
+5. **AI Integration**: Pre-configured Claude Code setup with agent patterns
 
 ### AI-Assisted Development
 
@@ -167,11 +180,13 @@ Use the `/setup-monorepo` command in Claude Code to get started with an interact
 
 ### Available Scripts
 
-- `pnpm dev` - Start development servers (runs `moon run :dev`)
-- `pnpm build` - Build all projects (runs `moon run :build`)
-- `pnpm test` - Run all tests (runs `moon run :test`)
-- `pnpm lint` - Run linting (runs `moon run :lint`)
+- `pnpm dev` - Start development servers{% if cookiecutter.use_moon == 'y' %} (runs `moon run :dev`){% endif %}
+- `pnpm build` - Build all projects{% if cookiecutter.use_moon == 'y' %} (runs `moon run :build`){% endif %}
+- `pnpm test` - Run all tests{% if cookiecutter.use_moon == 'y' %} (runs `moon run :test`){% endif %}
+- `pnpm lint` - Run linting{% if cookiecutter.use_moon == 'y' %} (runs `moon run :lint`){% endif %}
+{% if cookiecutter.use_moon == 'y' -%}
 - `moon run <project>:<task>` - Run a specific task for a specific project
+{%- endif %}
 
 ### Git-subrepo Commands (if enabled)
 
@@ -200,7 +215,8 @@ Git-subrepo allows you to include external repositories directly in your monorep
 ### Extending Configuration
 
 The template includes configuration for:
-- Moon build system (`.moon/`)
+- pnpm workspaces (always included)
+- Moon build system (`.moon/` - optional)
 - VS Code settings (`.vscode/`)
 - Claude Code integration (`.claude/`)
 - Environment variables (`.env.example`)
@@ -210,12 +226,15 @@ The template includes configuration for:
 The template supports conditional features based on your choices during generation:
 
 - **git-subrepo**: When disabled (`use_git_subrepo: n`), git-subrepo specific files are moved to `archived/` and all references are removed from documentation
-- **Multi-language support**: Add or remove language-specific configurations in `.moon/tasks/` as needed
+- **moon**: When disabled (`use_moon: n`), the `.moon/` directory is moved to `archived/` and package.json uses placeholder scripts
+- **proto**: When disabled (`use_proto: n`), installation instructions use standard Node.js/npm installation instead of proto
+- **Multi-language support**: Add or remove language-specific configurations in `.moon/tasks/` as needed (if moon is enabled)
 
 ### Post-Generation Hook
 
 The template includes a post-generation hook (`hooks/post_gen_project.py`) that:
-- Moves conditional features to archived when not selected
+- Moves git-subrepo files to archived when not selected
+- Moves moon directory to archived when not selected
 - Provides setup instructions
 - Prepares the project for immediate use
 

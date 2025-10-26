@@ -1,19 +1,19 @@
 # Project Overview
 
-**Architecture**: {% if cookiecutter.use_git_subrepo == 'y' %}Git-subrepo monorepo{% else %}Monorepo{% endif %} with pnpm workspace and moon build system
+**Architecture**: {% if cookiecutter.use_git_subrepo == 'y' %}Git-subrepo monorepo{% else %}Monorepo{% endif %} with pnpm workspace{% if cookiecutter.use_moon == 'y' %} and moon build system{% endif %}
 - `{{ cookiecutter.project_slug }}/libs` (our own libraries)
 - `{{ cookiecutter.project_slug }}/apps` (our apps in development)
 - `{{ cookiecutter.project_slug }}/mcp` (our MCP servers in development)
 
-**Core Technologies**: SolidStart/Solid.js, TypeScript, pnpm{% if cookiecutter.use_git_subrepo == 'y' %}, git-subrepo{% endif %}, moon, Python/uv, Nim, Rust
+**Core Technologies**: SolidStart/Solid.js, TypeScript, pnpm{% if cookiecutter.use_git_subrepo == 'y' %}, git-subrepo{% endif %}{% if cookiecutter.use_moon == 'y' %}, moon{% endif %}, Python/uv, Nim, Rust
 
 **Environment Configuration**: Projects store environment variables in '.dev.vars', '.env', or '.env.local' files. Manage toolchains with `mise` (see `mise.toml`). Use `dotenvx` for local env loading where appropriate. Never commit secrets.
 
 # Project Dependencies
 
 - We use pnpm for managing typescript and javascript dependencies.{% if cookiecutter.use_git_subrepo == 'y' %} This is a pnpm workspace organized by git-subrepo.
-- This is a git-subrepo monorepo containing both apps/ and libs/ . The project and its deps are mostly organized by a pnpm workspace and moon{% else %} This is a pnpm workspace monorepo.
-- The project and its deps are organized by a pnpm workspace and moon{% endif %}
+- This is a git-subrepo monorepo containing both apps/ and libs/ . The project and its deps are mostly organized by a pnpm workspace{% if cookiecutter.use_moon == 'y' %} and moon{% endif %}{% else %} This is a pnpm workspace monorepo.
+- The project and its deps are organized by a pnpm workspace{% if cookiecutter.use_moon == 'y' %} and moon{% endif %}{% endif %}
 - Always use pnpm and pnpx instead of npm and npx
 - Each project usually has its own environment variables stored in one or more of the following files: '.dev.vars', '.env', '.env.local'.{% if cookiecutter.use_git_subrepo == 'y' %} The monorepo has its own '.env' but we haven't been using it for subrepos.{% endif %}
 
@@ -168,7 +168,7 @@ It is NOT your job to diagnose code issues. Delegate that to the appropriate age
 - Do NOT use brittle solutions.
 - Mandate testing with Playwright MCP for web functionality
 - Verify proper cleanup of temporary files and redundant code
-- Ensure adherence to pnpm workspace and moon build system requirements
+- Ensure adherence to pnpm workspace{% if cookiecutter.use_moon == 'y' %} and moon build system{% endif %} requirements
 - Always remember that agents' work must be rigorously tested and verified. Always be skeptical. Always verify.
 
 ## Quality Assurance
@@ -185,11 +185,13 @@ Recommended package scripts across apps/libs:
 
 ### Code Validation
 
-- Ensure adherence to pnpm workspace and moon build system requirements
+- Ensure adherence to pnpm workspace{% if cookiecutter.use_moon == 'y' %} and moon build system{% endif %} requirements
 - Follow existing code conventions and patterns
 - Verify proper cleanup of temporary files and redundant code
+{% if cookiecutter.use_moon == 'y' -%}
 - Define moon tasks per package and prefer running via moon in CI
 - Avoid ad-hoc shell scripts when an equivalent moon task exists
+{%- endif %}
 
 ### Security Constraints
 
