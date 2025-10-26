@@ -4,39 +4,40 @@
 
 ## Overview
 
-This is a modern agentic monorepo template built with:
+This is a modern agentic monorepo built with:
 
 - **pnpm** - Fast, disk space efficient package manager
 - **moon** - Build system and task runner for monorepos
 {% if cookiecutter.use_git_subrepo == 'y' -%}
 - **git-subrepo** - Multi-repository management
 {% endif -%}
-- **TypeScript** - Type-safe JavaScript
-{% if cookiecutter.include_python_libs == 'y' -%}
-- **Python** - Support for Python libraries
-{% endif -%}
-{% if cookiecutter.include_nim_libs == 'y' -%}
-- **Nim** - Support for Nim libraries
-{% endif -%}
+- **Multi-language support** - TypeScript, JavaScript, Python, Rust, Go, Nim, Zig, C, Java, PHP, Ruby, (and any others really)
 
 ## Structure
 
 ```
 {{cookiecutter.project_slug}}/
-├── apps/              # Applications
-├── libs/              # Shared libraries
-{% if cookiecutter.include_typescript_libs == 'y' -%}
-│   ├── typescript/    # TypeScript libraries
-{% endif -%}
-{% if cookiecutter.include_python_libs == 'y' -%}
-│   ├── python/        # Python libraries
-{% endif -%}
-{% if cookiecutter.include_nim_libs == 'y' -%}
-│   └── nim/           # Nim libraries
-{% endif -%}
+├── .claude/           # Claude Code agent configuration
+├── .moon/             # Moon build system config
+├── projects/
+│   ├── apps/          # Applications
+│   ├── experiments/   # Experimental code
+│   ├── libs/          # Shared libraries (by language)
+│   │   ├── c/
+│   │   ├── go/
+│   │   ├── java/
+│   │   ├── javascript/
+│   │   ├── nim/
+│   │   ├── php/
+│   │   ├── python/
+│   │   ├── ruby/
+│   │   ├── rust/
+│   │   ├── typescript/
+│   │   └── zig/
+│   └── third_party/   # Third-party dependencies
+├── bin/               # Utility scripts
 ├── docs/              # Documentation
-├── experiments/       # Experimental code
-└── third_party/       # Third-party dependencies
+└── logs/              # Log files
 ```
 
 ## Getting Started

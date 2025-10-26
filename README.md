@@ -10,10 +10,11 @@ A modern cookiecutter template for creating agentic monorepos with pnpm, moon, a
 - [git-subrepo](https://github.com/ingydotnet/git-subrepo) - Multi-repository management (optional)
 
 🏗️ **Multi-Language Support**
-- TypeScript libraries
-- Python libraries
-- Nim libraries
-- Others can be added
+- TypeScript, JavaScript
+- Python
+- Rust, Go, Nim, Zig
+- C, Java, PHP, Ruby
+- Extensible structure for additional languages
 
 🤖 **AI Agent Ready**
 - Pre-configured Claude Code integration
@@ -102,14 +103,25 @@ your-project-slug/
 ├── .claude/                 # Claude Code configuration
 ├── .moon/                   # Moon build system config
 ├── .vscode/                 # VS Code settings
-├── apps/                    # Applications
-├── libs/                    # Shared libraries
-│   ├── typescript/          # TypeScript libraries
-│   ├── python/              # Python libraries
-│   └── nim/                 # Nim libraries
+├── projects/
+│   ├── apps/                # Applications
+│   ├── experiments/         # Experimental code
+│   ├── libs/                # Shared libraries by language
+│   │   ├── c/
+│   │   ├── go/
+│   │   ├── java/
+│   │   ├── javascript/
+│   │   ├── nim/
+│   │   ├── php/
+│   │   ├── python/
+│   │   ├── ruby/
+│   │   ├── rust/
+│   │   ├── typescript/
+│   │   └── zig/
+│   └── third_party/         # Third-party dependencies
+├── bin/                     # Utility scripts
 ├── docs/                    # Documentation
-├── experiments/             # Experimental code
-├── third_party/             # Third-party dependencies
+├── logs/                    # Log files
 ├── CLAUDE.md               # AI agent instructions
 ├── package.json            # Root package configuration
 └── README.md               # Generated project README
@@ -126,11 +138,11 @@ The generated monorepo includes:
 
 ### Available Scripts
 
-- `moon run my-website:dev` - Run a subrepo's dev server via pnpm
-- `pnpm dev` - Start development servers
-- `pnpm build` - Build all projects
-- `pnpm test` - Run all tests
-- `pnpm lint` - Run linting
+- `pnpm dev` - Start development servers (runs `moon run :dev`)
+- `pnpm build` - Build all projects (runs `moon run :build`)
+- `pnpm test` - Run all tests (runs `moon run :test`)
+- `pnpm lint` - Run linting (runs `moon run :lint`)
+- `moon run <project>:<task>` - Run a specific task for a specific project
 
 ### Git-subrepo Commands (if enabled)
 
@@ -155,14 +167,6 @@ Git-subrepo allows you to include external repositories directly in your monorep
 In regards to the monorepo, you may use standard git commands to manage it independent of git-subrepo.
 
 ## Customization
-
-### Adding New Languages
-
-To add support for additional languages:
-
-1. Update `cookiecutter.json` with new options
-2. Modify `hooks/post_gen_project.py` to handle new directories
-3. Update `.moon/workspace.yml` template with new project patterns
 
 ### Extending Configuration
 

@@ -22,18 +22,26 @@ hasher:
 projects:
   
   # Applications
-  - "apps/*"
+  - "projects/apps/*"
   
-  # Shared libraries (organized by language when needed)
-{% if cookiecutter.include_python_libs == 'y' -%}
-  - "libs/python/*"
-{% endif -%}
-{% if cookiecutter.include_typescript_libs == 'y' -%}
-  - "libs/typescript/*"
-{% endif -%}
-{% if cookiecutter.include_nim_libs == 'y' -%}
-  - "libs/nim/*"
-{% endif -%}
+  # Shared libraries (organized by language)
+  - "projects/libs/c/*"
+  - "projects/libs/go/*"
+  - "projects/libs/java/*"
+  - "projects/libs/javascript/*"
+  - "projects/libs/nim/*"
+  - "projects/libs/php/*"
+  - "projects/libs/python/*"
+  - "projects/libs/ruby/*"
+  - "projects/libs/rust/*"
+  - "projects/libs/typescript/*"
+  - "projects/libs/zig/*"
+  
+  # Experiments
+  - "projects/experiments/*"
+  
+  # Third-party dependencies
+  - "projects/third_party/*"
 
 pipeline:
   inheritColorsForPipedTasks: true
