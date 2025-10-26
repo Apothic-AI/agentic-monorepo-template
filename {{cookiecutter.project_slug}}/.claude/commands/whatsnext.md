@@ -1,0 +1,1 @@
+Analyze the current state of things, and determine what you think we should do next.

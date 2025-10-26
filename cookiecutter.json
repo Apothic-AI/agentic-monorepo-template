@@ -1,0 +1,28 @@
+{
+  "project_name": "my-monorepo",
+  "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '-').replace('_', '-') }}",
+  "project_description": "A modern agentic monorepo template with pnpm, moon, and git-subrepo",
+  "author_name": "Your Name",
+  "author_email": "your.email@example.com",
+  "github_username": "yourusername",
+  "github_organization": "{{ cookiecutter.github_username }}",
+  "use_git_subrepo": "y",
+  "node_version": "22",
+  "pnpm_version": "10.13.1",
+  "moon_version": ">=1.30.0",
+  "license": ["MIT", "Apache-2.0", "BSD-3-Clause", "GPL-3.0", "Proprietary"],
+  "year": "{% now 'utc', '%Y' %}",
+  "_extensions": ["jinja2_time.TimeExtension"],
+  "_copy_without_render": [
+    "*.png",
+    "*.jpg",
+    "*.jpeg",
+    "*.gif",
+    "*.svg",
+    "*.ico",
+    "*.woff",
+    "*.woff2",
+    "*.ttf",
+    "*.eot"
+  ]
+}

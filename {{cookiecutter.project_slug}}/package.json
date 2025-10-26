@@ -1,0 +1,24 @@
+{
+  "name": "@{{cookiecutter.github_organization}}/{{cookiecutter.project_slug}}",
+  "description": "{{cookiecutter.project_description}}",
+  "version": "0.1.0",
+  "private": true,
+  "author": "{{cookiecutter.author_name}} <{{cookiecutter.author_email}}>",
+  "license": "{{cookiecutter.license}}",
+  "devDependencies": {
+    "@types/node": "^{{cookiecutter.node_version}}",
+    "typescript": "^5.7.2"
+  },
+  "scripts": {
+    "dev": "moon run :dev",
+    "build": "moon run :build",
+    "test": "moon run :test",
+    "lint": "moon run :lint"
+  },
+  "engines": {
+    "node": "~{{cookiecutter.node_version}}"
+  },
+  "packageManager": "pnpm@{{cookiecutter.pnpm_version}}",
+  "dependencies": {
+  }
+}

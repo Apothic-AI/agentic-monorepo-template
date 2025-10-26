@@ -1,0 +1,28 @@
+$schema: "https://moonrepo.dev/schemas/toolchain.json"
+
+# Configure Node.js and package manager
+node:
+  version: '22'
+  packageManager: 'pnpm'
+  # Enable workspace dependency syncing
+  syncProjectWorkspaceDependencies: true
+  dependencyVersionFormat: 'workspace'
+  # Don't infer tasks from scripts to avoid conflicts with our moon tasks
+  inferTasksFromScripts: false
+  # Enable engine constraints for consistency
+  addEnginesConstraint: true
+  # Dedupe after lockfile changes
+  dedupeOnLockfileChange: true
+  pnpm:
+    version: '10.13.1'
+    installArgs: ['--frozen-lockfile']
+
+# Configure Python for projects that use it
+python:
+  version: '3.12.0'
+  packageManager: 'uv'
+  rootVenvOnly: true  # Single version policy
+  venvName: '.venv'
+  uv:
+    version: '0.5.26'
+    syncArgs: ['--all-projects']

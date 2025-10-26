@@ -1,0 +1,139 @@
+$schema: 'https://moonrepo.dev/schemas/tasks.json'
+
+# Global task options that apply to all inherited tasks
+taskOptions:
+  # Cache by default for better performance
+  cache: true
+  # Don't retry by default - let specific tasks override
+  retryCount: 0
+  # Use streaming output for better developer experience
+  outputStyle: 'stream'
+  # Run commands from workspace root when needed
+  runFromWorkspaceRoot: false
+  # Enable better error tracking
+  allowFailure: false
+
+# File groups that can be referenced by projects
+fileGroups:
+  sources:
+    - 'src/**/*'
+    - 'lib/**/*'
+    - 'components/**/*'
+    - 'pages/**/*'
+    - 'app/**/*'
+  tests:
+    - 'tests/**/*'
+    - '**/__tests__/**/*'
+    - '**/*.test.*'
+    - '**/*.spec.*'
+  configs:
+    - '*.config.*'
+    - '*.json'
+    - '.env*'
+    - 'tsconfig*.json'
+    - 'package.json'
+    - 'moon.yml'
+    - 'wrangler.jsonc'
+  docs:
+    - '*.md'
+    - 'docs/**/*'
+    - 'README*'
+  assets:
+    - 'public/**/*'
+    - 'static/**/*'
+    - 'assets/**/*'
+    - '**/*.{css,scss,sass,less}'
+    - '**/*.{png,jpg,jpeg,gif,svg,ico}'
+
+# Implicit inputs that affect all tasks
+implicitInputs:
+  - 'package.json'
+  - '.env'
+  - 'moon.yml'
+
+# Implicit dependencies for all tasks
+implicitDeps:
+  # Always ensure projects are synced before running tasks
+  - '^:sync-deps'
+
+# Common tasks that most projects can inherit
+tasks:
+  # Dependency synchronization (internal task)
+  sync-deps:
+    command: 'echo'
+    args: ['Dependencies synced']
+    options:
+      internal: true
+      cache: false
+
+  # Linting task - can be overridden per project
+  lint:
+    command: 'eslint'
+    args: ['--no-error-on-unmatched-pattern', '.']
+    inputs:
+      - '@group(sources)'
+      - '@group(configs)'
+      - '.eslintrc*'
+      - '.eslintignore'
+    options:
+      affectedFiles: true
+
+  # Formatting task
+  format:
+    command: 'prettier'
+    args: ['--check', '.']
+    inputs:
+      - '@group(sources)'
+      - '@group(docs)'
+      - '.prettierrc*'
+      - '.prettierignore'
+
+  # Format fix
+  format-fix:
+    extends: 'format'
+    args: ['--write', '.']
+    local: true
+
+  # Type checking for TypeScript projects
+  typecheck:
+    command: 'tsc'
+    args: ['--noEmit']
+    inputs:
+      - '@group(sources)'
+      - 'tsconfig*.json'
+
+  # Testing task
+  test:
+    command: 'jest'
+    args: ['--passWithNoTests']
+    inputs:
+      - '@group(sources)'
+      - '@group(tests)'
+      - '@group(configs)'
+      - 'jest.config.*'
+
+  # Testing with watch mode
+  test-watch:
+    extends: 'test'
+    args: ['--watch']
+    options:
+      interactive: true
+      cache: false
+
+  # Clean task for removing build artifacts
+  clean:
+    command: 'rm'
+    args: ['-rf', 'dist', 'build', '.next', 'out', '.output']
+    local: true
+
+  # Install dependencies
+  install:
+    command: 'pnpm'
+    args: ['install']
+    inputs:
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+    options:
+      cache: true
+      retryCount: 0
+

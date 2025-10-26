@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+# kill-port.sh — kill whatever process is listening on a TCP port
+# Usage: ./kill-port.sh <port>
+
+set -euo pipefail
+
+if [[ $# -ne 1 ]]; then
+  echo "Usage: $0 <port>" >&2
+  exit 1
+fi
+
+PORT="$1"
+if ! [[ "$PORT" =~ ^[0-9]+$ ]] || (( PORT < 1 || PORT > 65535 )); then
+  echo "Invalid port: $PORT" >&2
+  exit 2
+fi
+
+# Find PIDs using lsof, ss, or fuser
+PIDS=""
+if command -v lsof >/dev/null 2>&1; then
+  PIDS="$(lsof -ti TCP:$PORT -sTCP:LISTEN 2>/dev/null || true)"
+fi
+if [[ -z "$PIDS" ]] && command -v ss >/dev/null 2>&1; then
+  PIDS="$(ss -lptn "sport = :$PORT" 2>/dev/null | grep -oP 'pid=\K[0-9]+' | sort -u || true)"
+fi
+if [[ -z "$PIDS" ]] && command -v fuser >/dev/null 2>&1; then
+  PIDS="$(fuser -n tcp $PORT 2>/dev/null | tr ' ' '\n' || true)"
+fi
+
+if [[ -z "$PIDS" ]]; then
+  echo "No process is listening on TCP port $PORT."
+  exit 0
+fi
+
+echo "Found processes on port $PORT:"
+for pid in $PIDS; do
+  comm="$(ps -o comm= -p "$pid" 2>/dev/null || true)"
+  echo "  PID $pid ${comm:+($comm)}"
+done
+
+echo "Sending SIGTERM..."
+for pid in $PIDS; do
+  kill "$pid" 2>/dev/null || true
+done
+
+sleep 2
+
+# Check if any remain, then SIGKILL
+STILL=""
+for pid in $PIDS; do
+  if kill -0 "$pid" 2>/dev/null; then
+    STILL="$STILL $pid"
+  fi
+done
+
+if [[ -n "$STILL" ]]; then
+  echo "Processes still running, sending SIGKILL..."
+  for pid in $STILL; do
+    kill -9 "$pid" 2>/dev/null || true
+  done
+fi
+
+echo "Port $PORT is now free."

@@ -1,0 +1,53 @@
+$schema: "https://moonrepo.dev/schemas/workspace.json"
+
+# Ensure all developers use a compatible moon version
+versionConstraint: "{{cookiecutter.moon_version}}"
+
+experiments:
+{% if cookiecutter.use_git_subrepo == 'y' -%}
+  gitV2: true  # Better git-subrepo support
+{% endif -%}
+  fasterGlobWalk: true  # Performance improvement
+
+hasher:
+  optimization: "accuracy"  # Better for lockfile-based repos
+  ignorePatterns:
+    - "third_party/**"
+    - "**/.git/**"
+    - "**/node_modules/**"
+    - "**/__pycache__/**"
+    - "**/.venv/**"
+    - "**/.moon/cache/**"
+
+projects:
+  
+  # Applications
+  - "apps/*"
+  
+  # Shared libraries (organized by language when needed)
+{% if cookiecutter.include_python_libs == 'y' -%}
+  - "libs/python/*"
+{% endif -%}
+{% if cookiecutter.include_typescript_libs == 'y' -%}
+  - "libs/typescript/*"
+{% endif -%}
+{% if cookiecutter.include_nim_libs == 'y' -%}
+  - "libs/nim/*"
+{% endif -%}
+
+pipeline:
+  inheritColorsForPipedTasks: true
+  logRunningCommand: true
+  autoCleanCache: true
+  cacheLifetime: "7 days"
+  # Enable better dependency management
+  installDependencies: true
+  syncProjects: true
+  syncWorkspace: true
+
+vcs:
+  manager: "git"
+  defaultBranch: "master"
+  syncHooks: false  # Don't auto-sync hooks for team repos
+
+

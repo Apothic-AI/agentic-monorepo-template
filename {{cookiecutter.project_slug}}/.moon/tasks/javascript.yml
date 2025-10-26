@@ -1,0 +1,30 @@
+$schema: 'https://moonrepo.dev/schemas/tasks.json'
+
+# JavaScript-specific tasks that inherit from global tasks  
+tasks:
+  # Override build for JavaScript projects
+  build:
+    command: 'vite'
+    args: ['build']
+    inputs:
+      - '@group(sources)'
+      - '@group(assets)'
+      - '@group(configs)'
+      - 'vite.config.*'
+    outputs:
+      - 'dist'
+      - 'build'
+
+  # Dev server for JavaScript projects
+  dev:
+    command: 'vite'
+    args: ['dev']
+    local: true
+    deps: ['install']
+
+  # Preview built app
+  preview:
+    command: 'vite'
+    args: ['preview']
+    local: true
+    deps: ['build']

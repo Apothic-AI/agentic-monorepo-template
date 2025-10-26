@@ -1,0 +1,55 @@
+$schema: 'https://moonrepo.dev/schemas/tasks.json'
+
+# Python-specific tasks that inherit from global tasks
+tasks:
+  # Python build task
+  build:
+    command: 'python'
+    args: ['-m', 'build']
+    inputs:
+      - '@group(sources)'
+      - 'pyproject.toml'
+      - 'setup.py'
+      - 'setup.cfg'
+    outputs:
+      - 'dist'
+
+  # Python dev setup
+  dev:
+    command: 'uv'
+    args: ['sync', '--dev']
+    local: true
+
+  # Python testing with pytest
+  test:
+    command: 'pytest'
+    args: ['--verbose']
+    inputs:
+      - '@group(sources)'
+      - '@group(tests)'
+      - 'pyproject.toml'
+      - 'pytest.ini'
+
+  # Python linting with ruff
+  lint:
+    command: 'ruff'
+    args: ['check', '.']
+    inputs:
+      - '@group(sources)'
+      - 'pyproject.toml'
+      - 'ruff.toml'
+
+  # Python formatting with ruff
+  format:
+    command: 'ruff'
+    args: ['format', '--check', '.']
+    inputs:
+      - '@group(sources)'
+      - 'pyproject.toml'
+      - 'ruff.toml'
+
+  format-fix:
+    extends: 'format'
+    args: ['format', '.']
+    options:
+      cache: false

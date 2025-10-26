@@ -1,0 +1,1 @@
+Analyze the current state of $ARGUMENTS, and determine what you think we should do next.
