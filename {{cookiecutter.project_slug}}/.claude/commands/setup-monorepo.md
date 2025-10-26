@@ -1,5 +1,5 @@
 - Let's setup this monorepo, which has presumably just been initialized.
 - Start by exploring the structure of this monorepo (Including hidden files & dirs) and reading all the lines of all the files you encounter.
 - Run `pnpm install` from the monorepo's root
-- Then, ask the user how they would like to proceed, like whether they need to clone or initialize any subrepos, engage in planning with you, etc.
-- If the user says they need to clone a subrepo, tell the user to use the `/subrepo-new` command in Claude Code. DO NOT clone it for them.
+- Then, ask the user how they would like to proceed{% if cookiecutter.use_git_subrepo == 'y' %}, like whether they need to clone or initialize any subrepos, engage in planning with you, etc.
+- If the user says they need to clone a subrepo, tell the user to use the `/subrepo-new` command in Claude Code. DO NOT clone it for them.{% else %}, such as engaging in planning, creating new projects, etc.{% endif %}

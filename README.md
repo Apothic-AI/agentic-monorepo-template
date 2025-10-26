@@ -1,6 +1,6 @@
 # Agentic Monorepo Cookiecutter Template
 
-A modern cookiecutter template for creating agentic monorepos with pnpm, moon, and git-subrepo support.
+A modern cookiecutter template for creating agentic monorepos with pnpm, moon, and optional git-subrepo support.
 
 ## Features
 
@@ -92,6 +92,18 @@ You'll be prompted for:
 
 ```bash
 cd your-project-slug
+```
+
+If you're using Claude Code (recommended):
+
+```bash
+claude
+# Then use the /setup-monorepo command
+```
+
+Or manually:
+
+```bash
 pnpm install
 pnpm dev
 ```
@@ -101,7 +113,13 @@ pnpm dev
 ```
 your-project-slug/
 ├── .claude/                 # Claude Code configuration
+│   ├── agents/              # Specialized AI agents
+│   └── commands/            # Custom Claude Code commands
 ├── .moon/                   # Moon build system config
+│   ├── tasks/               # Language-specific task definitions
+│   ├── tasks.yml            # Global task definitions
+│   ├── toolchain.yml        # Toolchain configuration (Node, Python)
+│   └── workspace.yml        # Workspace and project discovery
 ├── .vscode/                 # VS Code settings
 ├── projects/
 │   ├── apps/                # Applications
@@ -114,11 +132,12 @@ your-project-slug/
 │   │   ├── nim/
 │   │   ├── php/
 │   │   ├── python/
-│   │   ├── ruby/
 │   │   ├── rust/
 │   │   ├── typescript/
 │   │   └── zig/
 │   └── third_party/         # Third-party dependencies
+├── archived/                # Archived/unused features
+│   └── .claude/             # Conditional features (e.g., git-subrepo when disabled)
 ├── bin/                     # Utility scripts
 ├── docs/                    # Documentation
 ├── logs/                    # Log files
@@ -133,8 +152,18 @@ The generated monorepo includes:
 
 1. **Build System**: Moon orchestrates builds across all projects
 2. **Package Management**: pnpm workspaces for efficient dependency management
-3. **Version Control**: Optional git-subrepo for multi-repo management
+3. **Version Control**: Git with optional git-subrepo for multi-repo management
 4. **AI Integration**: Pre-configured Claude Code setup with agent patterns
+
+### AI-Assisted Development
+
+The template includes a comprehensive `.claude/` directory with:
+
+- **Agents**: Specialized AI agents for different tasks (orchestration, research, testing, etc.)
+- **Commands**: Custom Claude Code commands for common workflows
+- **Instructions**: Context and guidelines in `CLAUDE.md` for AI-assisted development
+
+Use the `/setup-monorepo` command in Claude Code to get started with an interactive setup process.
 
 ### Available Scripts
 
@@ -146,7 +175,7 @@ The generated monorepo includes:
 
 ### Git-subrepo Commands (if enabled)
 
-When git-subrepo is enabled, you can manage external repositories as subdirectories:
+When git-subrepo is enabled during template generation (`use_git_subrepo: y`), you can manage external repositories as subdirectories:
 
 ```bash
 # Add external repo as subrepo
@@ -162,9 +191,9 @@ git subrepo push <subdir>
 git subrepo status [<subdir>]
 ```
 
-Git-subrepo allows you to include external repositories directly in your monorepo without requiring users to install additional tools or manage submodules.
+**Note**: If you choose not to enable git-subrepo during generation, the git-subrepo agent and commands will be automatically moved to the `archived/` directory and git-subrepo references will be removed from documentation.
 
-In regards to the monorepo, you may use standard git commands to manage it independent of git-subrepo.
+Git-subrepo allows you to include external repositories directly in your monorepo without requiring users to install additional tools or manage submodules. You can still use standard git commands to manage the monorepo itself.
 
 ## Customization
 
@@ -175,6 +204,20 @@ The template includes configuration for:
 - VS Code settings (`.vscode/`)
 - Claude Code integration (`.claude/`)
 - Environment variables (`.env.example`)
+
+### Conditional Features
+
+The template supports conditional features based on your choices during generation:
+
+- **git-subrepo**: When disabled (`use_git_subrepo: n`), git-subrepo specific files are moved to `archived/` and all references are removed from documentation
+- **Multi-language support**: Add or remove language-specific configurations in `.moon/tasks/` as needed
+
+### Post-Generation Hook
+
+The template includes a post-generation hook (`hooks/post_gen_project.py`) that:
+- Moves conditional features to archived when not selected
+- Provides setup instructions
+- Prepares the project for immediate use
 
 ## Contributing
 

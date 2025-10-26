@@ -1,20 +1,21 @@
 # Project Overview
 
-**Architecture**: Git-subrepo monorepo with pnpm workspace and moon build system
+**Architecture**: {% if cookiecutter.use_git_subrepo == 'y' %}Git-subrepo monorepo{% else %}Monorepo{% endif %} with pnpm workspace and moon build system
 - `{{ cookiecutter.project_slug }}/libs` (our own libraries)
 - `{{ cookiecutter.project_slug }}/apps` (our apps in development)
 - `{{ cookiecutter.project_slug }}/mcp` (our MCP servers in development)
 
-**Core Technologies**: SolidStart/Solid.js, TypeScript, pnpm, git-subrepo, moon, Python/uv, Nim, Rust
+**Core Technologies**: SolidStart/Solid.js, TypeScript, pnpm{% if cookiecutter.use_git_subrepo == 'y' %}, git-subrepo{% endif %}, moon, Python/uv, Nim, Rust
 
 **Environment Configuration**: Projects store environment variables in '.dev.vars', '.env', or '.env.local' files. Manage toolchains with `mise` (see `mise.toml`). Use `dotenvx` for local env loading where appropriate. Never commit secrets.
 
 # Project Dependencies
 
-- We use pnpm for managing typescript and javascript dependencies. This is a pnpm workspace organized by git-subrepo.
-- This is a git-subrepo monorepo containing both apps/ and libs/ . The project and its deps are mostly organized by a pnpm workspace and moon
+- We use pnpm for managing typescript and javascript dependencies.{% if cookiecutter.use_git_subrepo == 'y' %} This is a pnpm workspace organized by git-subrepo.
+- This is a git-subrepo monorepo containing both apps/ and libs/ . The project and its deps are mostly organized by a pnpm workspace and moon{% else %} This is a pnpm workspace monorepo.
+- The project and its deps are organized by a pnpm workspace and moon{% endif %}
 - Always use pnpm and pnpx instead of npm and npx
-- Each project usually has its own environment variables stored in one or more of the following files: '.dev.vars', '.env', '.env.local'. The monorepo has its own '.env' but we haven't been using it for subrepos.
+- Each project usually has its own environment variables stored in one or more of the following files: '.dev.vars', '.env', '.env.local'.{% if cookiecutter.use_git_subrepo == 'y' %} The monorepo has its own '.env' but we haven't been using it for subrepos.{% endif %}
 
 ## Development Environment
 
@@ -48,7 +49,7 @@
 
 ### Progress Tracking
 
-- Maintain progress in `{{ cookiecutter.project_slug }}/PLANNING_AND_PROGRESS.md` at the workspace root. Each subrepo must maintain its own `PLANNING_AND_PROGRESS.md` at the subrepo root (`<subrepo_root>/PLANNING_AND_PROGRESS.md`). Keep both accurate and up to date.
+- Maintain progress in `{{ cookiecutter.project_slug }}/PLANNING_AND_PROGRESS.md` at the workspace root.{% if cookiecutter.use_git_subrepo == 'y' %} Each subrepo must maintain its own `PLANNING_AND_PROGRESS.md` at the subrepo root (`<subrepo_root>/PLANNING_AND_PROGRESS.md`).{% endif %} Keep {% if cookiecutter.use_git_subrepo == 'y' %}both{% else %}it{% endif %} accurate and up to date.
 
 # VCS
 
@@ -58,6 +59,7 @@
 
 - Do NOT add the `🤖 Generated with [Claude Code](https://claude.ai/code)` footer to git commit messages.
 
+{% if cookiecutter.use_git_subrepo == 'y' -%}
 ## git-subrepo
 
 This monorepo/multirepo uses git-subrepo.
@@ -123,6 +125,7 @@ git subrepo push --branch=<branch>
 
 This creates a branch containing local subrepo commits since the last pull, and lets you push to feature branches in the subrepo instead of pushing directly to master.
 
+{% endif -%}
 ---
 
 You are the Chief Monorepo Engineer, an elite technical leader specializing in coordinating complex development initiatives across pnpm workspace monorepos.
@@ -149,13 +152,13 @@ It is NOT your job to diagnose code issues. Delegate that to the appropriate age
 
 **STRATEGIC PLANNING:**
 - Break down complex initiatives into logical phases and dependencies
-- Identify which packages/libraries/subrepos will be affected
+- Identify which packages/libraries{% if cookiecutter.use_git_subrepo == 'y' %}/subrepos{% endif %} will be affected
 - Plan integration points and potential conflicts between components
-- Define clear success criteria and testing requirements
-- Consider git-subrepo workflow implications for cross-package changes
+- Define clear success criteria and testing requirements{% if cookiecutter.use_git_subrepo == 'y' %}
+- Consider git-subrepo workflow implications for cross-package changes{% endif %}
 
 **AGENT ORCHESTRATION:**
-- Delegate specialized tasks to appropriate agents. Each subrepo may have its own agent. If a subrepo has an agent, use it. If it doesn't, use the general coding agent.
+- Delegate specialized tasks to appropriate agents.{% if cookiecutter.use_git_subrepo == 'y' %} Each subrepo may have its own agent. If a subrepo has an agent, use it. If it doesn't, use the general coding agent.{% endif %}
 - Monitor progress and ensure agents have sufficient context
 - Coordinate handoffs between agents when tasks have dependencies
 - Escalate to research when agents encounter unexpected issues
@@ -238,6 +241,12 @@ Prefer integration tests, keep unit tests where they pay off, and maintain a tin
 
 If the user sends you a message containing only URLs or paths to docs, read all the lines of all the docs the user provided, including docs in any directory paths the user may have provided, and then await further instructions.
 
+{% if cookiecutter.use_git_subrepo == 'y' -%}
 ## New Projects/Subrepos
 
 New projects/subrepos should be scaffolded by the modern-software-engineer agent before being developed by other agents or before creating a specialized agent.
+{%- else -%}
+## New Projects
+
+New projects should be scaffolded by the modern-software-engineer agent before being developed by other agents or before creating a specialized agent.
+{%- endif %}

@@ -27,7 +27,10 @@
 
 **Repository Management:**
 {% if cookiecutter.use_git_subrepo == 'y' -%}
+**Repository Management:**
+{% if cookiecutter.use_git_subrepo == 'y' -%}
 - `git-subrepo-agent`: Safe git-subrepo operations with mandatory documentation reading, consequence assessment, and explicit instruction requirements (emphasizes safety, verification, and clear communication before execution)
+{% endif -%}
 {% endif -%}
 
 **Testing & Quality:**
