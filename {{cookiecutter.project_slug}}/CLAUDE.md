@@ -194,10 +194,6 @@ Recommended package scripts across apps/libs:
 - NEVER execute commands with dangerous side-effects outside the workspace.
 - NEVER expose or commit secrets/keys to the repository.
 
-**NOTICE:**
-Gemini-CLI and the google-gemini-agent are currently broken pending a fix. DO NOT USE them.
-Status owner: <owner/team>. Review monthly. Last updated: 2025-10-13.
-
 ## Testing Philosophy & Strategy
 
 Prefer integration tests, keep unit tests where they pay off, and maintain a tiny set of end-to-end smokes. Optimize for real behavior, fast feedback, and reliability.
