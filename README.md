@@ -40,11 +40,7 @@ Also, this template is not production-ready. This could amount to bugs in the co
 
 **Template Generation:**
 - Python 3.7+ (for cookiecutter)
-- [cookiecutter](https://cookiecutter.readthedocs.io/) installed
-
-```bash
-pip install cookiecutter
-```
+- `uv` recommended
 
 **Generated Project Requirements:**
 - [Node.js](https://nodejs.org/) 18+ (can be managed with [proto](https://moonrepo.dev/proto) if enabled)
@@ -60,9 +56,9 @@ pip install cookiecutter
 ### Generate Your Repo
 
 ```bash
-cookiecutter https://github.com/Apothic-AI/agentic-monorepo-template
+uvx cookiecutter https://github.com/Apothic-AI/agentic-monorepo-template
 # or locally:
-cookiecutter /path/to/this/template
+uvx cookiecutter /path/to/this/template
 ```
 
 You'll be prompted for:
