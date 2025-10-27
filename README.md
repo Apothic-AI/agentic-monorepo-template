@@ -2,6 +2,18 @@
 
 A modern cookiecutter template for creating agentic monorepos with pnpm and optional moon, proto, and git-subrepo support.
 
+## Message From The Author
+
+Our Claude Code-managed monorepo performs extremely well. This template is an attempt to share that performance with others. However, this is only a slice of the original prompts, scripts, and structures. Its performance *SHOULD* be relative to ours but that is not verified or guaranteed. Not yet anyway.
+
+Also, this template is not production-ready. This could amount to bugs in the cookiecutter scripting. It is being shared untested due to some requests for it on Discord.
+
+**MCP**: We have been developing a SOTA MCP system. As such, I am not yet adding any MCP configs in this project since I'm about to replace them. Howevever, I do recommend that you at least use these since they are in the prompts:
+
+**playwright**: `npx @playwright/mcp@latest --extension` * *Requires installing the playwright extension in Chrome*
+
+**exa**: `https://mcp.exa.ai/mcp`
+
 ## Features
 
 🚀 **Modern Tooling**
@@ -45,37 +57,10 @@ pip install cookiecutter
 - [moon](https://moonrepo.dev/) - Build system and task runner (if `use_moon: y`)
 - [git-subrepo](https://github.com/ingydotnet/git-subrepo) - Multi-repository management (if `use_git_subrepo: y`)
 
-**Installation Commands:**
-```bash
-{% if cookiecutter.use_proto == 'y' -%}
-# Install proto (for version management)
-curl -fsSL https://moonrepo.dev/install/proto.sh | bash
-
-# Install Node.js and pnpm via proto
-proto install node {{cookiecutter.node_version}}
-proto install pnpm {{cookiecutter.pnpm_version}}
-{%- else -%}
-# Install Node.js (visit https://nodejs.org/)
-# Then install pnpm
-npm install -g pnpm@{{cookiecutter.pnpm_version}}
-{%- endif %}
-
-{% if cookiecutter.use_moon == 'y' -%}
-# Install moon
-npm install -g @moonrepo/cli
-{% endif -%}
-
-# Install uv (for Python projects)
-curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# Install Claude Code
-npm install -g @anthropic-ai/claude-code
-```
-
-### Generate Your Monorepo
+### Generate Your Repo
 
 ```bash
-cookiecutter https://github.com/yourusername/agentic-monorepo-template
+cookiecutter https://github.com/Apothic-AI/agentic-monorepo-template
 # or locally:
 cookiecutter /path/to/this/template
 ```
@@ -237,6 +222,10 @@ The template includes a post-generation hook (`hooks/post_gen_project.py`) that:
 - Moves moon directory to archived when not selected
 - Provides setup instructions
 - Prepares the project for immediate use
+
+## TODO
+
+- MCP configs via SMCP
 
 ## Contributing
 
