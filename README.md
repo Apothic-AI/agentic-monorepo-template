@@ -56,9 +56,9 @@ Also, this template is not production-ready. This could amount to bugs in the co
 ### Generate Your Repo
 
 ```bash
-uvx cookiecutter https://github.com/Apothic-AI/agentic-monorepo-template
+uvx --with jinja2-time cookiecutter https://github.com/Apothic-AI/agentic-monorepo-template
 # or locally:
-uvx cookiecutter /path/to/this/template
+uvx --with jinja2-time cookiecutter /path/to/this/template
 ```
 
 You'll be prompted for:
